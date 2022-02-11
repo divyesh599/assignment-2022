@@ -11,6 +11,11 @@ polys=[]
 for item in data['features'][0]["geometry"]['coordinates']:
     polys.append(item[0])
 
+n=len(polys)
+for i in range(n):
+    polys[i]=Polygon(polys[i])
+
+
 # Queries
 csv_points=[]
 file = open("india_extent_points.csv")
@@ -24,19 +29,16 @@ file.close()
 del csvreader
 
 
+f=open('answer.csv', 'w', newline='')
+writer = csv.writer(f)
+writer.writerow(header)
 
-ans=[]
-n=len(polys)
+
+count_c=1
 for i in range(5000):
     p1=Point(csv_points[i][2], csv_points[i][1])
     for j in range(n):
-        if p1.within(Polygon(polys[j])):
-            ans.append([csv_points[i][1], csv_points[i][2]])
+        if p1.within(polys[j]):
+            writer.writerow([count_c, csv_points[i][1], csv_points[i][2]])
+            count_c+=1
             break
-
-
-with open('answer.csv', 'w', newline='') as f:
-    writer = csv.writer(f)
-    writer.writerow(header)
-    for i in range(len(ans)):
-        writer.writerow([i+1, ans[i][0], ans[i][1]])
