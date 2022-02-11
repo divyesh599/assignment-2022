@@ -2,9 +2,6 @@ import json
 import csv
 from shapely.geometry import Point, MultiPolygon, Polygon
 
-import geopandas as gpd
-import matplotlib.pyplot as plt
-
 
 with open('india_geojson.geojson', 'r') as json_file:
     data = json.load(json_file)
